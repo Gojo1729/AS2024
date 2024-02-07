@@ -1,0 +1,1 @@
+1. Unsupervised Learning for Music Genre Classification of Song Lyrics https://web.stanford.edu/~manav/CS%20221%20Final%20Paper

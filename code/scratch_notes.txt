@@ -1,0 +1,1 @@
+1. Data is not labelled. So, we need to use unsupervised technique to cluster the songs into sentiment group.
