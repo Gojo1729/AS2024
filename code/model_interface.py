@@ -1,17 +1,22 @@
 import gradio as gr
 import numpy as np
 from sentiment_classifier.embeddings_classifier import EMBClassifier
+from sentiment_classifier.kmeans_clustering import KMeans
 
 wv_from_bin = None
 
 
 def predict(lyrics: str, model_selection: list[str]) -> list[str]:
-    embeddings_classifier = EMBClassifier()
     global wv_from_bin
+    if model_selection == "Embeddings":
+        embeddings_classifier = EMBClassifier()
 
-    return list(
-        embeddings_classifier.predict(input_lyrics=lyrics, wv_from_bin=wv_from_bin)
-    )
+        return list(
+            embeddings_classifier.predict(input_lyrics=lyrics, wv_from_bin=wv_from_bin)
+        )
+    elif model_selection == "Kmeans":
+        kmeans_clustering = KMeans()
+        return kmeans_clustering.predict(input_lyrics=lyrics, wv_from_bin=wv_from_bin)
 
 
 def load_embedding_model():
@@ -32,7 +37,7 @@ if __name__ == "__main__":
     # Create Gradio interface with dropdown menu
     inputs = gr.Textbox(label="Input Lyrics")
     model_dropdown = gr.Dropdown(
-        choices=["Embeddings approach", "KMeans", "Logistic Regression"],
+        choices=["Embeddings", "Kmeans", "Logistic Regression"],
         label="Select Model",
     )
     outputs = gr.Textbox(label="Sentiment/Mood")
