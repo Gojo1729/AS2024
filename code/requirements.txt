@@ -2,3 +2,5 @@ pandas
 gensim
 gradio
 email-validator
+tensorboard
+tensorflow
