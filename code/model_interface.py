@@ -82,4 +82,4 @@ if __name__ == "__main__":
             inputs=[mode_type, choice, lyrics_input],
             outputs=outputs,
         )
-    demo.launch()
+    demo.launch(share=True)
