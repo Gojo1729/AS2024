@@ -1,11 +1,11 @@
 from cProfile import label
 import gradio as gr
 import numpy as np
-from sentiment_classifier.embeddings_classifier import EMBClassifier
-from sentiment_classifier.kmeans_clustering import KMeans
+from sentiment_classifier.scripts.embeddings_classifier import EMBClassifier
+from sentiment_classifier.scripts.kmeans_clustering import KMeans
 from lyrics_generator.lyrics_gen import Generator
-from sentiment_classifier.nn_classifier import NN
-from sentiment_classifier.neural_network import NeuralNetwork
+from sentiment_classifier.scripts.nn_classifier import NN
+from sentiment_classifier.scripts.neural_network import NeuralNetwork
 
 wv_from_bin = None
 
@@ -82,4 +82,4 @@ if __name__ == "__main__":
             inputs=[mode_type, choice, lyrics_input],
             outputs=outputs,
         )
-    demo.launch(share=True)
+    demo.launch(share=False)

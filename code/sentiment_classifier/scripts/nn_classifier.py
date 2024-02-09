@@ -14,19 +14,19 @@ from . import utils
 class NN:
     def __init__(self) -> None:
         random.seed(42)
-        p = Path(Path.cwd()) / "code/sentiment_classifier/"
+        p = Path(Path.cwd()) / "code/sentiment_classifier/embeddings"
         with open(p / "nn.pickle", "rb") as f:
             self.nn = pickle.load(f)
         self.labels = np.array(
             [
+                "Joy",
+                "Trust",
+                "Fear",
+                "Surprise",
                 "Sadness",
                 "Disgust",
-                "Fear",
                 "Anger",
-                "Trust",
                 "Anticipation",
-                "Surprise",
-                "Joy",
             ]
         )
 
