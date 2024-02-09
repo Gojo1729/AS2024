@@ -4,6 +4,8 @@ import numpy as np
 from sentiment_classifier.embeddings_classifier import EMBClassifier
 from sentiment_classifier.kmeans_clustering import KMeans
 from lyrics_generator.lyrics_gen import Generator
+from sentiment_classifier.nn_classifier import NN
+from sentiment_classifier.neural_network import NeuralNetwork
 
 wv_from_bin = None
 
@@ -31,6 +33,10 @@ def classify(lyrics: str, model_selection: str) -> list[str]:
     elif model_selection == "Kmeans":
         kmeans_clustering = KMeans()
         return kmeans_clustering.predict(input_lyrics=lyrics, wv_from_bin=wv_from_bin)
+
+    elif model_selection == "Neural Net":
+        nn = NN()
+        return nn.predict(input_lyrics=lyrics, wv_from_bin=wv_from_bin)
 
 
 def choose_mode(mode: str, choice: str, lyrics_input: str):
