@@ -21,13 +21,13 @@ class KMeans:
         self.labels = {
             0: ["Amazement", "Solemnity", "Tenderness", "Calmness"],
             1: ["Joyful activation", "Power", "Tension", "Amazement"],
-            2: ["Nostalgia", "Calmness", "Sadness", "Amazement"],
-            3: ["Calmness", "Sadness", "Nostalgia", "Amazement"],
-            4: ["Calmness", "Sadness", "Nostalgia", "Amazement"],
+            2: ["Nostalgia", "Sadness", "Amazement"],
+            3: ["Calmness", "Sadness", "Amazement"],
+            4: ["Calmness", "Sadness", "Nostalgia"],
             5: ["Joyful activation", "Power", "Tension", "Amazement"],
             6: ["Amazement", "Solemnity", "Tenderness", "Calmness"],
-            7: ["Calmness", "Sadness", "Nostalgia", "Amazement"],
-            8: ["Calmness", "Sadness", "Nostalgia", "Amazement"],
+            7: ["Sadness", "Nostalgia", "Amazement"],
+            8: ["Nostalgia", "Amazement"],
         }
 
     def predict(self, input_lyrics: str, wv_from_bin: np.ndarray) -> list[str]:
