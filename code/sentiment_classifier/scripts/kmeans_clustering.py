@@ -19,15 +19,15 @@ class KMeans:
         )
         self.centroids = np.load(p)
         self.labels = {
-            0: ["Calmness", "Sadness", "Nostalgia"],
-            1: ["Joyful activation", "Power", "Tension"],
-            2: ["Amazement", "Solemnity", "Tenderness"],
-            3: ["Joyful activation", "Power", "Tension"],
-            4: ["Nostalgia", "Calmness", "Sadness"],
-            5: ["Amazement", "Solemnity", "Tenderness"],
-            6: ["Calmness", "Sadness", "Amazement"],
-            7: ["Calmness", "Sadness"],
-            8: ["Calmness", "Nostalgia"],
+            0: ["Amazement", "Solemnity", "Tenderness", "Calmness"],
+            1: ["Joyful activation", "Power", "Tension", "Amazement"],
+            2: ["Nostalgia", "Calmness", "Sadness", "Amazement"],
+            3: ["Calmness", "Sadness", "Nostalgia", "Amazement"],
+            4: ["Calmness", "Sadness", "Nostalgia", "Amazement"],
+            5: ["Joyful activation", "Power", "Tension", "Amazement"],
+            6: ["Amazement", "Solemnity", "Tenderness", "Calmness"],
+            7: ["Calmness", "Sadness", "Nostalgia", "Amazement"],
+            8: ["Calmness", "Sadness", "Nostalgia", "Amazement"],
         }
 
     def predict(self, input_lyrics: str, wv_from_bin: np.ndarray) -> list[str]:

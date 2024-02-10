@@ -8,22 +8,56 @@ import random
 import string
 
 labels = np.array(
-    [
-        "Calmness",
-        "Sadness",
-        "Power",
-        "Tension",
-        "Amazement",
-        "Solemnity",
-        "Tenderness",
-        "Joyful activation",
-        "Nostalgia",
-    ]
+    ["Joy", "Trust", "Fear", "Surprise", "Sadness", "Disgust", "Anger", "Anticipation"]
 )
+
+
+def precision(y_true, y_pred, num_classes):
+    # Initialize arrays to store true positives, false positives, and precision
+    TP = np.zeros(num_classes)
+    FP = np.zeros(num_classes)
+    precision_scores = np.zeros(num_classes)
+
+    # Calculate true positives and false positives for each class
+    for i in range(num_classes):
+        TP[i] = np.sum((y_true == i) & (y_pred == i))
+        FP[i] = np.sum((y_true != i) & (y_pred == i))
+
+    # Compute precision for each class
+    for i in range(num_classes):
+        if TP[i] + FP[i] > 0:
+            precision_scores[i] = TP[i] / (TP[i] + FP[i])
+
+    return np.mean(precision_scores)
+
+
+def hamming_loss(y_true, y_pred):
+    # Calculate number of mismatches
+    num_mismatches = np.sum(y_true != y_pred)
+
+    # Compute Hamming Loss
+    hamming_loss = num_mismatches / (y_true.shape[0] * y_true.shape[1])
+
+    return hamming_loss
+
+
+def top3_accuracy(predicted_probs, true_labels):
+
+    sorted_indices = np.argsort(predicted_probs, axis=1)[:, ::-1]
+
+    # Check if true labels are in top-3 predicted labels
+    top3_correct = np.any(
+        true_labels[np.arange(len(true_labels))[:, None], sorted_indices[:, :3]], axis=1
+    )
+    # Calculate top-3 accuracy
+    top3_accuracy = np.mean(top3_correct)
+
+    return top3_accuracy
 
 
 def tokenize(lyric: str) -> list[str]:
     # lowercase the text, remove stop words, punctuation and keep only the words
+    lyric.replace("<br>", "\n")
     tokens = nltk.tokenize.word_tokenize(lyric.lower())
     stop_words = stopwords.words("english") + list(string.punctuation)
     lemmatizer = WordNetLemmatizer()
