@@ -6,8 +6,9 @@ from pathlib import Path
 
 
 class Generator:
-    def __init__(self):
-        p = Path(Path.cwd()) / "code/lyrics_generator"
+    def __init__(self, emotion: str):
+        self.emotion = emotion
+        p = Path(Path.cwd()) / f"code/lyrics_generator/{self.emotion}"
         self.w1 = np.load(p / "w1.npy")
         self.w2 = np.load(p / "w2.npy")
         with open(p / "word_index.json", "r") as json_file:
