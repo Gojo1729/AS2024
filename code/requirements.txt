@@ -4,3 +4,4 @@ gradio
 email-validator
 tensorboard
 tensorflow
+nltk
