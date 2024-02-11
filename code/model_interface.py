@@ -12,7 +12,7 @@ wv_from_bin = None
 
 
 def load_embedding_model():
-    """Load GloVe Vectors
+    """Load Word2vec Embeddings
     Return:
         wv_from_bin: All 3000000 embeddings, each lengh 300
     """
@@ -25,9 +25,11 @@ def load_embedding_model():
 
 def classify(lyrics: str, model_selection: str) -> list[str]:
     global wv_from_bin
+    if wv_from_bin is None:
+        raise Exception("Word embeddings are not assigined, please load the word embeddings")
+    
     if model_selection == "Embeddings":
         embeddings_classifier = EMBClassifier()
-
         return list(
             embeddings_classifier.predict(input_lyrics=lyrics, wv_from_bin=wv_from_bin)
         )
@@ -37,7 +39,9 @@ def classify(lyrics: str, model_selection: str) -> list[str]:
 
     elif model_selection == "Neural Net":
         nn = NN()
-        return nn.predict(input_lyrics=lyrics, wv_from_bin=wv_from_bin)
+        return list(nn.predict(input_lyrics=lyrics, wv_from_bin=wv_from_bin))
+    else:
+        raise Exception(f"Not supported {model_selection}")
 
 
 def choose_mode(
@@ -47,9 +51,9 @@ def choose_mode(
     if mode == "Lyrics Generator":
         print(f"{emotion=}, {starting_word=}")
         gen = LyricsGenerator(emotion)
-        if choice == "Dumb Model":
+        if choice == "Without Template":
             return gen.generate_lyrics_withouttemplate(starting_word)
-        elif choice == "Smart Model":
+        elif choice == "With Template":
             return gen.generate_lyrics_from_template(starting_word)
 
     elif mode == "Lyrics Classifier":
@@ -63,7 +67,7 @@ if __name__ == "__main__":
     options_1 = ["Lyrics Classifier", "Lyrics Generator"]
     options_2 = {
         "Lyrics Classifier": ["Embeddings", "Kmeans", "Neural Net"],
-        "Lyrics Generator": ["Dumb Model", "Smart Model"],
+        "Lyrics Generator": ["Without Template", "With Template"],
     }
     emotion_choices = [
         "Joy",
@@ -85,17 +89,12 @@ if __name__ == "__main__":
             return d2
 
         mode_type.input(update_second, mode_type, model_type)
-        lyrics_input = gr.Textbox(label="Input Lyrics (only for lyrics classification)")
+        lyrics_input = gr.Textbox(label="Input Lyrics (For lyrics classification)")
         starting_word_input = gr.Textbox(label="Starting word (For lyrics generation)")
         emotion = gr.Dropdown(
             choices=emotion_choices, label="Select motion (For lyrics generation)"
         )
-        outputs = gr.Textbox("Output")
-
-        # def print_results(option_1, option_2):
-        #     return f"You selected '{option_1}' in the first dropdown and '{option_2}' in the second dropdown."
-
-        # choice.input(choose_mode, [mode_type, choice, lyrics_input], outputs)
+        outputs = gr.Textbox(label="Predictions")
         submit_button = gr.Button(value="Submit", variant="primary")
         submit_button.click(
             choose_mode,

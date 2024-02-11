@@ -1,3 +1,4 @@
+from IPython import embed
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -12,69 +13,35 @@ labels = np.array(
 )
 
 
-def precision(y_true, y_pred, num_classes):
-    # Initialize arrays to store true positives, false positives, and precision
-    TP = np.zeros(num_classes)
-    FP = np.zeros(num_classes)
-    precision_scores = np.zeros(num_classes)
-
-    # Calculate true positives and false positives for each class
-    for i in range(num_classes):
-        TP[i] = np.sum((y_true == i) & (y_pred == i))
-        FP[i] = np.sum((y_true != i) & (y_pred == i))
-
-    # Compute precision for each class
-    for i in range(num_classes):
-        if TP[i] + FP[i] > 0:
-            precision_scores[i] = TP[i] / (TP[i] + FP[i])
-
-    return np.mean(precision_scores)
-
-
-def hamming_loss(y_true, y_pred):
-    # Calculate number of mismatches
-    num_mismatches = np.sum(y_true != y_pred)
-
-    # Compute Hamming Loss
-    hamming_loss = num_mismatches / (y_true.shape[0] * y_true.shape[1])
-
-    return hamming_loss
-
-
-def top3_accuracy(predicted_probs, true_labels):
-
-    sorted_indices = np.argsort(predicted_probs, axis=1)[:, ::-1]
-
-    # Check if true labels are in top-3 predicted labels
-    top3_correct = np.any(
-        true_labels[np.arange(len(true_labels))[:, None], sorted_indices[:, :3]], axis=1
-    )
-    # Calculate top-3 accuracy
-    top3_accuracy = np.mean(top3_correct)
-
-    return top3_accuracy
-
-
 def tokenize(lyric: str) -> list[str]:
-    # lowercase the text, remove stop words, punctuation and keep only the words
-    lyric.replace("<br>", "\n")
+    """
+    Tokenizes the input lyric by lowercasing the text, removing stop words, punctuation,
+    and lemmatizing the tokens.
+    Args:
+    - lyric (str): The input lyric to tokenize.
+    Returns:
+    - list[str]: A list of alpha tokens after lemmatization.
+    """
+    # Lowercase the text and tokenize
     tokens = nltk.tokenize.word_tokenize(lyric.lower())
+    # Define stop words and punctuation
     stop_words = stopwords.words("english") + list(string.punctuation)
+    # Initialize lemmatizer
     lemmatizer = WordNetLemmatizer()
+    # Lemmatize tokens and filter out non-alphabetic tokens and stop words
     alpha_tokens = [
         lemmatizer.lemmatize(token)
         for token in tokens
         if token.isalpha() and token not in stop_words
     ]
-
     return alpha_tokens
 
 
-def cosine_distance(X, centroids):
+def cosine_distance(embeddings, lyric_vector):
     # Compute cosine similarity between each data point and each centroid
-    dot_product = np.dot(X, centroids.T)
-    norms_X = np.linalg.norm(X, axis=1)[:, np.newaxis]
-    norms_centroids = np.linalg.norm(centroids, axis=1)
+    dot_product = np.dot(lyric_vector, embeddings.T)
+    norms_X = np.linalg.norm(lyric_vector, axis=1)[:, np.newaxis]
+    norms_centroids = np.linalg.norm(embeddings, axis=1)
     cosine_similarities = dot_product / (norms_X * norms_centroids)
 
     # Convert cosine similarities to cosine distances
@@ -82,13 +49,23 @@ def cosine_distance(X, centroids):
 
     return cosine_distances
 
-
 def vectorise(wv_from_bin, lyrics: str) -> np.ndarray:
+    """
+    Vectorizes the input lyrics using word embeddings.
+    Args:
+    - wv_from_bin: Word embeddings loaded from a binary file.
+    - lyrics (str): The input lyrics to vectorize.
+    Returns:
+    - np.ndarray: A vector representation of the input lyrics.
+    """
+    #Tokenize the input lyrics
     tokens = tokenize(lyrics)
     lyric_vector = np.zeros(300)
+    #Convert each token to word vector and sum it with other word vectors
     for token in tokens:
         try:
             lyric_vector += wv_from_bin.get_vector(token.lower())
         except:
             continue
+    #normalize the lyric vector
     return lyric_vector / np.linalg.norm(lyric_vector)
