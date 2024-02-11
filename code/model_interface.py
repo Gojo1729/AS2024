@@ -101,4 +101,4 @@ if __name__ == "__main__":
             inputs=[mode_type, model_type, lyrics_input, emotion, starting_word_input],
             outputs=outputs,
         )
-    demo.launch(share=False)
+    demo.launch(share=True)
