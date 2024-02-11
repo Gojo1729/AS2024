@@ -16,7 +16,7 @@ class KMeans:
         random.seed(42)
         p = (
             Path(Path.cwd())
-            / "code/sentiment_classifier/embeddings/kmeans_centeroids_v1.npy"
+            / "sentiment_classifier/embeddings/kmeans_centeroids_v1.npy"
         )
         self.centroids = np.load(p)
         self.labels = {

@@ -11,7 +11,7 @@ class EMBClassifier:
         #these are the embeddings created in notebook/embeddings_approach.ipynb
         emb_path = (
             Path(Path.cwd())
-            / "code/sentiment_classifier/embeddings/emotions_embeddings_v1.npy"
+            / "sentiment_classifier/embeddings/emotions_embeddings_v1.npy"
         )
         self.embeddings = np.load(emb_path)
         self.labels = np.array(

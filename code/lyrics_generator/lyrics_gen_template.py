@@ -15,7 +15,7 @@ class LyricsGenerator:
     def __init__(self, emotion) -> None:
         random.seed(42)
         self.emotion = emotion
-        p = Path(Path.cwd()) / f"code/lyrics_generator/embeddings/{self.emotion}"
+        p = Path(Path.cwd()) / f"lyrics_generator/embeddings/{self.emotion}"
 
         with open(p / "w2v.pickle", "rb") as f:
             self.w2v = pickle.load(f)

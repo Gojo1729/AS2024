@@ -9,7 +9,7 @@ from typing_extensions import Any
 class NN:
     def __init__(self) -> None:
         random.seed(42)
-        embeddings_path = Path(Path.cwd()) / "code/sentiment_classifier/embeddings"
+        embeddings_path = Path(Path.cwd()) / "sentiment_classifier/embeddings"
         with open(embeddings_path / "nn.pickle", "rb") as f:
             self.nn = pickle.load(f)
         self.labels = np.array(
