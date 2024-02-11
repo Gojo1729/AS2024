@@ -1,4 +1,3 @@
-from cProfile import label
 import gradio as gr
 import numpy as np
 from sentiment_classifier.scripts.embeddings_classifier import EMBClassifier
@@ -7,6 +6,8 @@ from lyrics_generator.lyrics_gen_template import LyricsGenerator
 from sentiment_classifier.scripts.nn_classifier import NN
 from sentiment_classifier.scripts.neural_network import NeuralNetwork
 from lyrics_generator.word2vector import word2vec
+import nltk
+nltk.download("book")
 
 wv_from_bin = None
 

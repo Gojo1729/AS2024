@@ -4,7 +4,7 @@ CodeAThon 2024 Feb
 
 # Demo
 
-Checkout the live demo at -
+Checkout the live demo at - https://huggingface.co/spaces/Shiv1729/AS-2024-Demo
 
 # How to testout the models?
 
