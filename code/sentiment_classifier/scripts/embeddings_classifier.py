@@ -1,7 +1,4 @@
 import numpy as np
-import nltk  # just for tokenization
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
 import random
 from pathlib import Path
 from . import utils

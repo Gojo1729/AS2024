@@ -1,11 +1,7 @@
-from IPython import embed
 import numpy as np
-import pandas as pd
-from tqdm import tqdm
 import nltk  # just for tokenization
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-import random
 import string
 
 labels = np.array(
