@@ -1,1 +1,4 @@
 1. Unsupervised Learning for Music Genre Classification of Song Lyrics https://web.stanford.edu/~manav/CS%20221%20Final%20Paper
+2. Edmonds dataset - https://github.com/BaoChunhui/Generate-Emotional-Music
+3. Multilabel - https://github.com/imdiptanu/lyrics-emotion-detection/
+4. Word2vec - https://nathanrooy.github.io/posts/2018-03-22/word2vec-from-scratch-with-python-and-numpy/

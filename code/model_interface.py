@@ -47,22 +47,23 @@ def choose_mode(
     if mode == "Lyrics Generator":
         print(f"{emotion=}, {starting_word=}")
         gen = LyricsGenerator(emotion)
-        return gen.generate_lyrics_from_template(starting_word)
+        if choice == "Dumb Model":
+            return gen.generate_lyrics_withouttemplate(starting_word)
+        elif choice == "Smart Model":
+            return gen.generate_lyrics_from_template(starting_word)
 
     elif mode == "Lyrics Classifier":
         return classify(lyrics_input, choice)
 
-        # Create Gradio interface with dropdown menu
-
 
 if __name__ == "__main__":
-    print(f"Loading Glove vectors, wait for few seconds")
-    # wv_from_bin = load_embedding_model()
+    print(f"Loading Word2vec vectors, wait for few seconds")
+    wv_from_bin = load_embedding_model()
 
     options_1 = ["Lyrics Classifier", "Lyrics Generator"]
     options_2 = {
         "Lyrics Classifier": ["Embeddings", "Kmeans", "Neural Net"],
-        "Lyrics Generator": ["Dumb Model", "Smart model"],
+        "Lyrics Generator": ["Dumb Model", "Smart Model"],
     }
     emotion_choices = [
         "Joy",

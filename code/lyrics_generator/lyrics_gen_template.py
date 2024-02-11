@@ -73,31 +73,6 @@ class LyricsGenerator:
             "wh_adverb": ["WRB"],
         }
 
-    # def word_sim(self, word, top_n):
-
-    #     w1_index = self.word_index[word]
-    #     v_w1 = self.w1[w1_index]
-
-    #     # CYCLE THROUGH VOCAB
-    #     word_sim = {}
-    #     for i in range(self.v_count):
-    #         v_w2 = self.w1[i]
-    #         theta_num = np.dot(v_w1, v_w2)
-    #         theta_den = np.linalg.norm(v_w1) * np.linalg.norm(v_w2)
-    #         theta = theta_num / theta_den
-
-    #         word = self.index_word[str(i)]
-    #         word_sim[word] = theta
-
-    #     words_sorted = sorted(word_sim.items(), key=lambda item: item[1], reverse=True)
-
-    #     words = []
-    #     for word in words_sorted[:top_n]:
-    #         words.append(word[0])
-
-    #     return words
-
-    # get the outer words closer to previous word, and select the word which matches expected_pos
     def get_expected_pos_from_corpus(
         self, expected_pos, previous_word, pos_corpus, pos_mapping, p_n_words
     ):
@@ -139,15 +114,15 @@ class LyricsGenerator:
         else:
             return tentative_word
 
-    def generate_lyrics_withouttemplate(self):
+    def generate_lyrics_withouttemplate(self, initial_token):
         n_words = 100
-        previous_word = initial_token = "i"
-        predicted_lyrics = initial_token
-        previous_five_words = [initial_token]
+        previous_word = initial_token.lower()
+        predicted_lyrics = previous_word
+        previous_five_words = [previous_word]
 
         for _ in tqdm(range(n_words)):
             count = 0
-            tentaitve_next_words = self.w2v.word_sim(previous_word, 10)
+            tentaitve_next_words = self.w2v.word_sim(previous_word, 11)[1:]
 
             tentaitve_next_word = np.random.choice(tentaitve_next_words + [",", "."])
             if tentaitve_next_word in [",", "."]:
@@ -181,8 +156,8 @@ class LyricsGenerator:
     def generate_lyrics_from_template(self, starting_word):
         # template parse verse1, chorus1, bridge, outro
         song_pos = self.get_pos_tags()
-        previous_word = starting_word
-        gen_lyric = f"{previous_word} "
+        previous_word = starting_word.lower()
+        gen_lyric = ""
         previous_n_words = []
         for song_section, structure in self.template.items():
             pos_list = list(map(lambda w: w.strip(), structure.split(",")))
